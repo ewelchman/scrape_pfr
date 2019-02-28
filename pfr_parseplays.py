@@ -3,12 +3,15 @@ import pandas as pd
 import json
 import os
 
+boxscore_dir = './data/pfr_pages/boxscores/'
+game_history_file = './data/parsed_files/game_history.json'
+parsedplays_file = './data/parsed_files/pfr_parsedplays.csv'
 
 #boxscore_path = '/home/welced12/googledrive/nfl_data/devl/pfr_boxscores'
-boxscore_path = '/home/welced12/git/football_analytics/pfr_pages/boxscores'
+#boxscore_path = '/home/welced12/git/football_analytics/pfr_pages/boxscores'
 #gamelistpath = '/home/welced12/googledrive/nfl_data/devl/pfr_gamedata.json'
-gamelistpath = '/home/welced12/git/football_analytics/pfr_pages/pfr_gamedata.json'
-pbp_filename = '/home/welced12/googledrive/nfl_data/devl/pfr_parsedplays.csv'
+#gamelistpath = '/home/welced12/git/football_analytics/pfr_pages/pfr_gamedata.json'
+#pbp_filename = '/home/welced12/googledrive/nfl_data/devl/pfr_parsedplays.csv'
 #pbp_filename = '/tmp/test_pfr_parsedplays.csv'
 
 debug_game = ''
@@ -452,13 +455,13 @@ def parse_pfr_pbp( game_page ):
 
 # Read & parse pbp from individual game json files
 gamepages = [
-    f for f in os.listdir(boxscore_path) 
-    if os.path.isfile(os.path.join(boxscore_path, f))
+    f for f in os.listdir(boxscore_dir) 
+    if os.path.isfile(os.path.join(boxscore_dir, f))
 ]
 
 # Load information about these games
 season_dfs = []
-with open(gamelistpath, 'r') as f:
+with open(game_history_file, 'r') as f:
     gamehist_dict = json.load(f)
 for ssn in gamehist_dict.keys():
     season_df = pd.DataFrame(gamehist_dict[ssn]['games'])
@@ -470,7 +473,7 @@ gamehist_df = pd.concat(season_dfs)
 game_dfs = []
 #for i, gamefile in enumerate(g for g in gamepages[:] if g.split('.')[0]==debug_game):
 for i, gamefile in enumerate(gamepages[:]):
-    with open(os.path.join(boxscore_path,gamefile), 'r') as f:
+    with open(os.path.join(boxscore_dir,gamefile), 'r') as f:
         g_dict = json.load(f)
 
     try:
@@ -508,5 +511,5 @@ cool_cols = ['season','week','gid','home','away','detail_a','detail_text',
 print(all_pbp_df.info())
 print(all_pbp_df[cool_cols].sample(10))
 
-print("Saving parsed plays to",pbp_filename)
-all_pbp_df.to_csv(pbp_filename)
+print("Saving parsed plays to",parsedplays_file)
+all_pbp_df.to_csv(parsedplays_file)

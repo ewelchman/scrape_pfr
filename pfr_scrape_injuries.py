@@ -3,7 +3,7 @@ import sys
 import json
 
 
-injury_dir = '/home/welced12/git/football_analytics/pfr_pages/injuries/'
+injuries_dir = './data/pfr_pages/injuries'
 
 
 if len(sys.argv) != 2:
@@ -29,6 +29,6 @@ for tm in teamids:
     page_dict = rp.read_inj_page(tm, season)
     
     # Store the resulting dict of tables as a json file
-    inj_file = '{}{}{}.json'.format(injury_dir,season,tm)
+    inj_file = '{}{}{}.json'.format(injuries_dir,season,tm)
     with open(inj_file, 'w') as f:
         json.dump(page_dict, f)

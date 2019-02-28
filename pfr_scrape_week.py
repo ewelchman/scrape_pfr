@@ -6,9 +6,7 @@ import time
 
 
 ### Location of game history json file
-#gamelistpath = '/home/welced12/googledrive/nfl_data/devl/pfr_gamedata.json'
-gamelistpath = '/home/welced12/git/football_analytics/pfr_pages/pfr_gamedata.json'
-
+game_history_file = './data/parsed_files/game_history.json'
 
 if len(sys.argv) != 3:
 	print("Proper usage:\n pfr_scrape_week.py [season] [week]")
@@ -30,15 +28,15 @@ wk = str(week)
 t = 0
 while t < 5:
     try:
-        with open(gamelistpath, 'r') as f:
+        with open(game_history_file, 'r') as f:
             games_dict = json.load(f)
-        print("Took",t+1,"tries to read",gamelistpath)
+        print("Took",t+1,"tries to read",game_history_file)
         t = 5
     except:
         t += 1
         time.sleep(0.1)
         if t==5:
-            print("Failed to read",gamelistpath)
+            print("Failed to read",game_history_file)
 
 
 # Make DataFrame of games for specified season

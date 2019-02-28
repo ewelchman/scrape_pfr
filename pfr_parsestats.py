@@ -7,10 +7,10 @@ import sys
 
 
 # File locations
-gamelistpath = '/home/welced12/googledrive/nfl_data/devl/pfr_gamedata.json'
-boxscore_path = '/home/welced12/git/football_analytics/pfr_pages/boxscores'
-injuries_path = '/home/welced12/git/football_analytics/pfr_pages/injuries'
-parsedstats_dir = '/home/welced12/googledrive/nfl_data/devl/parsed_ind_stats/'
+boxscore_dir = './data/pfr_pages/boxscores/'
+injuries_dir = './data/pfr_pages/injuries/'
+game_history_file = './data/parsed_files/game_history.json'
+parsedstats_dir = './data/parsed_files/parsed_stats/'
 
 
 usage = 'Proper usage:\npython pfr_parsestats.py [season]\nOR\npython pfr_parsestats.py [start_season] [end_season]'
@@ -231,7 +231,7 @@ def parse_teamyear_injuries(stats_df, yr, tm):
     tmyr_df = stats_df[ tmyr_filter ]
 
     # Load injury tables for this team, this season
-    inj_file = '{}/{}{}.json'.format(injuries_path, yr, tm)
+    inj_file = '{}{}{}.json'.format(injuries_dir, yr, tm)
     with open(inj_file, 'r') as f:
         inj_dict = json.load(f)
     inj_df = pd.DataFrame(inj_dict['team_injuries'])
@@ -289,7 +289,7 @@ def add_injuries(stats_df, yr):
 t0 = time.time()
 
 # Load game history DF
-with open(gamelistpath, 'r') as f:
+with open(game_history_file, 'r') as f:
     gamehist_dict = json.load(f)
 season_dfs = []
 for ssn in gamehist_dict.keys():
@@ -322,7 +322,7 @@ for season in [str(s) for s in range(start_season,end_season+1)]:
                               games_to_lookup.week_num.values):
         try:
             gid = str(box_link).split('/')[2].split('.')[0]
-            fname = boxscore_path+'/'+gid+'.json'
+            fname = boxscore_dir+gid+'.json'
             
             # Read stats for this particular game
             g_dict = {}

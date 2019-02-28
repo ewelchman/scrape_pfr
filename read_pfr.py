@@ -103,8 +103,9 @@ def read_table( html_tree,
                 
                     # Logic map for cell contents
                     if (len(tip) >= 1):
-                        # Have a data-tip. This is probably on an injury report page
+                        # Have a data-tip. This may be an injury report page
                         rd[stat[0]] = tip
+                        print("tip:",tip)
                     elif (len(txt) >= 1) and (len(a_text) >= 1):
                         # Have both links and standard text. Save both
                         rd[stat[0]+"_text"] = "brk, ".join(txt)
