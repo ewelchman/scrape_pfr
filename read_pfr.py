@@ -96,7 +96,7 @@ def read_table( html_tree,
                 # Depending on cell contents, add cell to row dict
                 try:
                     txt = cell.xpath('./text()')
-                    a_text = [x.text for x in cell.findall(".//a")]
+                    a_text = [x.text for x in cell.findall(".//a[@href]")]
                     a_href = [x.get("href") for x in cell.findall(".//a[@href]")]
                     stat = cell.xpath('./@data-stat')
                     tip = cell.xpath('./@data-tip')
@@ -105,7 +105,6 @@ def read_table( html_tree,
                     if (len(tip) >= 1):
                         # Have a data-tip. This may be an injury report page
                         rd[stat[0]] = tip
-                        print("tip:",tip)
                     elif (len(txt) >= 1) and (len(a_text) >= 1):
                         # Have both links and standard text. Save both
                         rd[stat[0]+"_text"] = "brk, ".join(txt)
@@ -125,6 +124,7 @@ def read_table( html_tree,
                                         
                 except:
                     print("Couldn't parse a cell")
+                    print(etree.tostring(cell, pretty_print=True))
             
             
             # Add row dictionary to list of rows
